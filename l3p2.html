@@ -16,33 +16,25 @@
    
 
       function App(){
-        
-        const [count,setCount]=React.useState(0);
-        const [count1,setCount1]=React.useState(0);
-        
-       const[times,setTimes]=React.useState("time");
-        const[times1,setTimes1]=React.useState("time");
+        let [name,setName]=React.useState('');
 
-        function counter(){
-            setCount(p=>p+1)
-           
-             setTimes(count===1?times+"s":times)
+        function change(event){
+            setName(event.target.value)
         }
-           function counter1(){
-            
-            setCount1(p=>p+1)
-             setTimes1(count1===1?times1+"s":times1)
+        function reset(event){
+            setName('')
         }
-        function reset(){
-          setCount(0);
+        function example(event){
+            setName("pranit")
         }
-           
+
         return(
           <>
-         
-          <button onClick={counter} >clicked {count}{times}</button>
-           <button onClick={counter} >clicked {count}{times}</button>
-           <button onClick={reset}>Reset</button>
+          <input type="text" onChange={change} placeholder="typ a name here" value={name}/>
+          <button onClick={reset}>Reset</button>
+          <button onClick={example}>Example</button>
+          <p>{name}</p>
+
           </>
         );
       }

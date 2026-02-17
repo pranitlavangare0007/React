@@ -18,44 +18,74 @@
 
 
 function ChatInput({chatMessage,setChatMessage}){
- let[currentText,setInputText]=React.useState('');
+ const[currentText,setInputText]=React.useState('');
+const [isLoading,setIsLoading] = React.useState(false);
+
+
+function handleChange(event){
+ setInputText( event.target.value)
+}
 
  function saveInputText(event){
-   setInputText( event.target.value);
+  
+  
+   if(event.key==='Enter' ){
+    sendMessage()
+   }
+   
+   if(event.key==="Escape"){
+    setInputText('')
+   }
  }
- function sendMessage(){
+async function sendMessage(){
+
+   if(!currentText.trim() || isLoading) return;
+
+    const text = currentText;
  
-const newMessage =[
-  ...chatMessage,
+const newMessage =(prev =>[
+  ...prev,
   {
-    message:currentText,
+    message:text,
     sender:"user",
     id:crypto.randomUUID()
   }
- ]
- setChatMessage(newMessage)
-
- const response =Chatbot.getResponse(currentText);
- setChatMessage([
-  ...newMessage,
-  {
-    message:response,
-    sender:"robot",
-    id:crypto.randomUUID()
-  }
  ])
+  setInputText("");
+    setIsLoading(true);
+ const loadingId = crypto.randomUUID();
 
-setInputText('');
+    setChatMessage(prev => [
+      ...prev,
+      {
+        message:"Loading...",
+        sender:"robot",
+        id:loadingId
+      }
+    ]);
+
+ const response =await Chatbot.getResponseAsync(currentText);
+  setChatMessage(prev =>
+      prev.map(msg =>
+        msg.id === loadingId
+          ? {...msg, message: response || "No response"}
+          : msg
+      )
+    );
+    setIsLoading(false);
+
  }
   return(
     <>
       <input
        placeholder="Send message to ChatBot" 
        size="30" 
-       onChange={saveInputText}
+       onChange={handleChange}
        value={currentText}
+       onKeyDown={saveInputText}
+        disabled={isLoading}
        />
-      <button onClick={sendMessage}>Send</button> 
+      <button onClick={sendMessage} disabled={isLoading || !currentText.trim()}>Send</button> 
      
     </>
   );
