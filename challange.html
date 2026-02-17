@@ -19,32 +19,26 @@
       const root=ReactDOM.createRoot(container);
 
       function Ecomm({title,Price,discount,image}){
-
-
+      
+        const result = discount ? <><del> <p>Price :${Price}</p></del> <p>Discount Price : ${discount}</p> </>: <p>Price :${Price}</p>;
+         
         return(
-          <>
+          <div>
           <img src={image} alt="" width="70"/>
           <h4>{title}</h4>
-          { !discount &&  
-           <p>Price :${Price}</p>
-        }
-        {(discount && <> <del> <p>Price :${Price}</p> </del>
-        
-        <p>Discount Price : ${discount}</p>
-        </>
-        )}
-        
+        {result}
           <button>Add to Cart</button>
-          </>
+          </div>
         );
       }
+      
 
      function App(){
       return(
         <div>
        <Ecomm title="Cotton socks" Price="100" discount="50" image="Cotton-socks.png"/>
        <Ecomm title="Tennise Ball" Price="200" image="tennis-balls.png"/>
-       <Ecomm title="Cricket balls" Price="150" />
+      
         </div>
       );
      }
