@@ -71,6 +71,21 @@
         scrollbar-width: none;
         
       }
+
+      .welcome-cont{
+       
+  
+        text-align: center;
+        padding: auto;
+        height: 100vh;
+      }
+      .welcome-cont h1{
+        margin-top: 300px;
+      }
+      .loading-spinner{
+        height: 40px;
+        margin: -15px;
+      }
     </style>
   </head>
   <body>
@@ -86,6 +101,17 @@
     <script type="text/babel">
    
 
+function useAutoScroll(dependencies){
+ const chatMsgRef=React.useRef(null);
+  React.useEffect(()=>{
+   const contElm= chatMsgRef.current;
+   if(contElm){
+    contElm.scrollTop=contElm.scrollHeight;
+   }
+  },[dependencies]);
+
+  return chatMsgRef;
+}
 
 function ChatInput({chatMessage,setChatMessage}){
  const[currentText,setInputText]=React.useState('');
@@ -129,7 +155,7 @@ const newMessage =(prev =>[
     setChatMessage(prev => [
       ...prev,
       {
-        message:"Loading...",
+        message:<img className="loading-spinner" src="./loading-spinner.gif"/>,
         sender:"robot",
         id:loadingId
       }
@@ -168,6 +194,7 @@ const newMessage =(prev =>[
 
 function ChatMessage({message,sender}){
  
+  
  
   return(
     <div className={
@@ -185,13 +212,15 @@ function ChatMessage({message,sender}){
 
 
 function ChatMessages ({chatMessage}){
-  const chatMsgRef=React.useRef(null);
-  React.useEffect(()=>{
-   const contElm= chatMsgRef.current;
-   if(contElm){
-    contElm.scrollTop=contElm.scrollHeight;
-   }
-  },[chatMessage]);
+ let chatMsgRef=useAutoScroll(chatMessage);
+
+  if(chatMessage.length===0){
+    return(
+      <div className="welcome-cont">
+      <h1>welcome to the chatbot project! Send a message using textbox below.</h1>
+        </div>
+    );
+  }
 
 return(
   <div className="chat-msg-cont" ref={chatMsgRef}>
@@ -211,28 +240,8 @@ return(
     
         function App(){
           let [chatMessage,setChatMessage]=React.useState(
-    [
-  {
-    message:"hello chatbot1",
-    sender:"user",
-    id:"1"
-  },
-  {
-    message:"hii how are you",
-    sender:"robot",
-    id:"2"
-  },
-  {
-    message:"i am fine ",
-    sender:"user",
-    id:"3"
-  },
-  {
-    message:"good!",
-    sender:"robot",
-    id:"4"
-  }
-]);
+    []);
+    
           return(
             <div className="app-cont">
                  

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+    <style>
+        .btn{
+          background-color: rgb(25, 135, 84);
+          border: none;
+          color: white;
+          padding: 10px 15px;
+          border-radius: 10px;
+        }
+        .btn-off{
+          background-color: rgb(220, 53, 69);
+          border: none;
+          color: white;
+          padding: 10px 15px;
+          border-radius: 10px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+   
+
+
+   function App(){
+    
+    const[buttonState,setButtonState] =React.useState("ON")
+   
+    function isButtonOn(){
+      
+      setButtonState(prev=> prev==="ON"?"OFF":"ON")
+
+    }
+    return(
+      <button className={buttonState==="ON"?"btn":"btn-off"} onClick={isButtonOn}>{buttonState}</button>
+    );
+   }
+      const container = document.querySelector('.js-container');
+        const root=ReactDOM.createRoot(container);
+        root.render(<App />)
+
+      
+    </script>
+  </body>
+</html>

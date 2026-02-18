@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+    <style>
+      body{
+        margin: 0;
+      }
+        .btn-form{
+          background-color: rgb(0,123,255) ;
+          border: none;
+          margin-right: 10px;
+          padding: 10px 15px;
+          border-radius: 10px;
+          color: white;
+        }
+
+        .btn-timer{
+          background-color: rgb(25, 135, 84);
+          border: none;
+          margin-right:20px;
+          padding: 10px 15px;
+          border-radius: 10px;
+          color: white;
+        }
+        .timer-container{
+           background-color: rgb(222, 222, 222);
+           display: flex;
+         
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+   
+
+   function FormComponent(){
+    let [type,setType]=React.useState("password");
+   
+    function isShowPass(event){
+      setType(prev => prev === "password" ?"text":"password")
+     
+    }
+   
+
+    return(
+      <div >
+       <h4>Hello , Welcome to my website.</h4>
+       <input type="text" placeholder="Email" /> <br/><br/>
+       <input  type={type}placeholder="password" />
+       <button onClick={isShowPass}>{type==="password"?"show":"hide"}</button>
+       <br/> <br/>
+       <button className="btn-form">Login</button>
+       <button className="btn-form">Sign Up</button>
+
+      </div>
+    );
+   }
+
+
+
+
+
+
+
+
+
+   function Clock(){
+    let time=dayjs().format('HH:mm:ss');
+    const[CurrentTime,setTime]=React.useState(time);
+
+ const timeRef=React.useRef(null);
+  React.useEffect(()=>{
+    const interval=setInterval(()=>{
+      time=dayjs().format('HH:mm:ss');
+      console.log(time)
+        setTime(time)
+      
+    },1000)
+    return () => clearInterval(interval);
+   
+  },[]);
+
+    return(
+      <div ref={timeRef}>
+<p >{CurrentTime}</p>
+       </div> 
+    );
+   }
+
+
+
+   function Timer(){
+   const [currentCount,setCurrentCount]=React.useState(0);
+
+  const countRef=React.useRef(null);
+ 
+function autoStart(){
+  if(countRef.current)return;
+     countRef.current=setInterval(()=>{
+      setCurrentCount(pre=>pre+1)
+    },1000)
+    
+  }
+
+  function autoStop(){
+clearInterval(countRef.current);
+countRef.current=null;
+
+  }
+ 
+   
+    function manualClick(){
+      setCurrentCount(prev=>prev+1);
+    }
+     function reset(){
+      setCurrentCount(0)
+     }
+
+    return(
+      <div className="timer-container" >
+        <button onClick={manualClick} className="btn-timer">Clicked {currentCount} Times</button>
+        <button onClick={reset} className="btn-timer">Reset</button>
+        <button onClick={autoStart} className="btn-timer">Auto Click start</button>
+        <button onClick={autoStop} className="btn-timer">Auto click stop</button>
+      </div>
+    );
+   }
+
+
+
+   function App(){
+    
+    
+    return(
+     <Timer />
+    );
+      
+   }
+      const container = document.querySelector('.js-container');
+        const root=ReactDOM.createRoot(container);
+       
+        root.render(<App />)
+
+        
+      
+    </script>
+  </body>
+</html>
