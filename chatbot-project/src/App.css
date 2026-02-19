@@ -78,3 +78,13 @@
         height: 40px;
         margin: -15px;
       }
+      .user-img{
+        height: 45px;
+        border-radius: 45px;
+        object-fit: cover;
+      }
+      .chat-time{
+        margin: 5px 0 0 0;
+        font-size: 14px;
+        opacity: 0.7;
+      }
